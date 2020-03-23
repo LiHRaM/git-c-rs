@@ -3,8 +3,8 @@
 //!
 //! An example:
 //! ```
-//! $ git-clown https://github.com/lihram/git-clown
-//! Cloning https://github.com/lihram/aau into /home/lihram/git/github.com/lihram/aau
+//! $ git-clown https://github.com/lihram/git-clown-rs.git
+//! Cloning https://github.com/lihram/git-clown-rs.git into /home/lihram/git/github.com/lihram/git-clown-rs
 //! ```
 
 use url::Url;
