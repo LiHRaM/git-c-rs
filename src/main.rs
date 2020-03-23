@@ -25,7 +25,7 @@ fn main() {
             buffer
         }
     };
-    let url = &url;
+    let url = &url.to_lowercase();
     let into_dir = organize(&prefix, &url);
     println!("Cloning {} into {}", url, into_dir);
     Command::new("git")
