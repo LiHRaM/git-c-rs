@@ -7,13 +7,17 @@
 //! Cloning https://github.com/lihram/git-clown-rs.git into /home/lihram/git/github.com/lihram/git-clown-rs
 //! ```
 
-use url::Url;
 use argh::FromArgs;
 use std::process::Command;
+use url::Url;
 
 fn main() {
     let args: Args = argh::from_env();
-    let home_dir = dirs::home_dir().expect("Could not find home dir!").to_str().unwrap().to_string();
+    let home_dir = dirs::home_dir()
+        .expect("Could not find home dir!")
+        .to_str()
+        .unwrap()
+        .to_string();
     let prefix = args.prefix.or_else(|| Some(home_dir + "/git")).unwrap();
 
     let url = {
@@ -54,7 +58,7 @@ fn organize(prefix: &str, url: &str) -> String {
     // Remove trailing .git
     let url = {
         if url.ends_with(".git") {
-            &url[..url.len()-4]
+            &url[..url.len() - 4]
         } else {
             url
         }
@@ -64,10 +68,12 @@ fn organize(prefix: &str, url: &str) -> String {
         format!("{}/{}{}", prefix, url.host_str().unwrap(), url.path())
     } else {
         // FORGIVE ME: There is no ssh formatting validation
-        let domain = url.split(':').collect::<Vec<_>>()[0].split("@").collect::<Vec<_>>()[1];
+        let domain = url.split(':').collect::<Vec<_>>()[0]
+            .split("@")
+            .collect::<Vec<_>>()[1];
         let path = {
             if let Some(loc) = url.find(':') {
-                &url[loc+1..]
+                &url[loc + 1..]
             } else {
                 ""
             }
