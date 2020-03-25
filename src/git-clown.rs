@@ -33,7 +33,9 @@ fn main() {
         .arg(url)
         .arg(into_dir)
         .spawn()
-        .expect("Calling git failed");
+        .expect("starting git clone failed")
+        .wait()
+        .expect("git clone was unsuccessful");
 }
 
 #[derive(FromArgs)]
