@@ -28,12 +28,11 @@ fn main() {
     };
     let url = &url.to_lowercase();
     let into_dir = lib::organize(&prefix, &url);
-    println!("Cloning {} into {}", url, into_dir);
     Command::new("git")
         .arg("clone")
         .arg(url)
         .arg(into_dir)
-        .output()
+        .spawn()
         .expect("Calling git failed");
 }
 
