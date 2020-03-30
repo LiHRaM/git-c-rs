@@ -3,9 +3,14 @@ name = "git-clown"
 version = "0.1.0"
 authors = ["Hilmar Gústafsson"]
 edition = "2018"
+license = "MIT"
 description = """
-Structure your git repositories differently using git-clown.
+The maniacal git clone wrapper.
 """
+repository = "https://github.com/lihram/git-clown-rs"
+readme = "README.md"
+keywords = ["git", "organize", "clone"]
+categories = ["command-line-utilities"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
