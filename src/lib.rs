@@ -43,7 +43,7 @@ pub fn organize(prefix: &str, url: &str) -> String {
         let ssh_parts = url.split(':').collect::<Vec<_>>();
 
         // ["git", "github.com"] -> "github.com"
-        let domain = ssh_parts[0].split("@").collect::<Vec<_>>()[1];
+        let domain = ssh_parts[0].split('@').collect::<Vec<_>>()[1];
 
         let path: String = path_filtered(ssh_parts[1]);
 
