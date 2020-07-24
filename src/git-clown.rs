@@ -19,7 +19,7 @@ fn main() {
 
     let url = {
         if let Some(url) = args.url {
-            url.to_string()
+            url
         } else {
             let mut buffer = String::new();
             std::io::stdin().read_line(&mut buffer).unwrap();
