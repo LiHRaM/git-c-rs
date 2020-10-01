@@ -16,7 +16,7 @@ categories = ["command-line-utilities"]
 [dependencies]
 url = "2.1.1"
 argh = "0.1.3"
-dirs = "2.0.2"
+dirs = "3.0.1"
 
 [[bin]]
 name = "git-clown"
