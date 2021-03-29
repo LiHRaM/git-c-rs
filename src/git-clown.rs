@@ -26,7 +26,7 @@ fn main() {
             buffer
         }
     };
-    let into_dir = lib::organize(&prefix, &url.to_lowercase());
+    let into_dir = lib::organize(&prefix, &url);
     Command::new("git")
         .arg("clone")
         .arg(url)
