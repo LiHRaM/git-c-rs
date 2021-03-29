@@ -20,35 +20,35 @@ const FILTER: [&str; 1] = ["git"];
 /// This is used for the target folder of the git clone command.
 pub fn organize(prefix: &str, url: &str) -> String {
     let url = url.trim();
-    // Remove trailing .git
-    let url = {
-        if url.ends_with(".git") {
-            &url[..url.len() - 4]
-        } else {
-            url
-        }
-    };
+    let url = url.strip_suffix(".git").unwrap_or_else(|| &url);
     if let Ok(url) = Url::parse(url) {
-        // HTTPS protocol
-        let path: String = url
-            .path()
-            .split('/')
-            .filter(|el| !FILTER.contains(el))
-            .collect::<Vec<_>>()
-            .join("/");
-        format!("{}/{}{}", prefix, url.host_str().unwrap(), path)
+        parse_https_url(url, prefix)
     } else {
-        // FORGIVE ME: There is no ssh formatting validation
-        // ["git@github.com", "lihram/git-clown-rs"]
-        let ssh_parts = url.split(':').collect::<Vec<_>>();
-
-        // ["git", "github.com"] -> "github.com"
-        let domain = ssh_parts[0].split('@').collect::<Vec<_>>()[1];
-
-        let path: String = path_filtered(ssh_parts[1]);
-
-        format!("{}/{}/{}", prefix, domain, path)
+        parse_ssh_url(url, prefix)
     }
+}
+
+fn parse_https_url(url: Url, prefix: &str) -> String {
+    let path: String = url
+        .path()
+        .split('/')
+        .filter(|el| !FILTER.contains(el))
+        .collect::<Vec<_>>()
+        .join("/");
+    format!("{}/{}{}", prefix, url.host_str().unwrap(), path)
+}
+
+fn parse_ssh_url(url: &str, prefix: &str) -> String {
+    // FORGIVE ME: There is no ssh formatting validation
+    // ["git@github.com", "lihram/git-clown-rs"]
+    let ssh_parts = url.split(':').collect::<Vec<_>>();
+
+    // ["git", "github.com"] -> "github.com"
+    let domain = ssh_parts[0].split('@').collect::<Vec<_>>()[1];
+
+    let path: String = path_filtered(ssh_parts[1]);
+
+    format!("{}/{}/{}", prefix, domain, path)
 }
 
 /// Remove parts of the path which are found in FILTER.
