@@ -10,12 +10,8 @@ mod lib;
 
 fn main() {
     let args: Args = argh::from_env();
-    let home_dir = dirs::home_dir()
-        .expect("Could not find home dir!")
-        .to_str()
-        .unwrap()
-        .to_string();
-    let prefix = args.prefix.or_else(|| Some(home_dir + "/git")).unwrap();
+    let base_dir = get_base_dir();
+    let prefix = args.prefix.or_else(|| Some(base_dir)).unwrap();
 
     let url = {
         if let Some(url) = args.url {
@@ -26,7 +22,7 @@ fn main() {
             buffer
         }
     };
-    let into_dir = lib::organize(&prefix, &url);
+    let into_dir = lib::to_filesystem_path(&prefix, &url);
     Command::new("git")
         .arg("clone")
         .arg(url)
@@ -35,6 +31,18 @@ fn main() {
         .expect("starting git clone failed")
         .wait()
         .expect("git clone was unsuccessful");
+}
+
+fn get_base_dir() -> String {
+    std::env::var("REPOS_DIR").unwrap_or_else(|_| get_home_dir() + "/git")
+}
+
+#[track_caller]
+fn get_home_dir() -> String {
+    dirs::home_dir()
+        .expect("Failed to find home directory.")
+        .to_string_lossy()
+        .to_string()
 }
 
 #[derive(FromArgs)]
