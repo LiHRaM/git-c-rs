@@ -12,16 +12,19 @@
 //! Cloning https://github.com/lihram/git-clown-rs.git into /home/lihram/git/github.com/lihram/git-clown-rs
 //! ```
 
+mod https;
+mod ssh;
+
 use url::Url;
 
 /// Transform the url into the folder structure.
 /// This is used for the target folder of the git clone command.
-pub fn to_filesystem_path(base: &str, url: &str) -> String {
+pub fn to_filesystem_path<'a>(base: &str, url: &'a str) -> String {
     let url = trim(url);
     if let Ok(url) = Url::parse(url) {
-        parse_https_url(url, base)
+        https::parse_url(url, base)
     } else {
-        parse_ssh_url(url, base)
+        ssh::parse_url(url, base)
     }
 }
 
@@ -31,48 +34,20 @@ fn trim(url: &str) -> &str {
     url
 }
 
-fn parse_https_url(url: Url, base: &str) -> String {
-    let path: String = url.path().split('/').collect::<Vec<_>>().join("/");
-    format!("{}/{}{}", base, url.host_str().unwrap(), path)
+#[test]
+fn github_https() {
+    let url = "https://github.com/lihram/rust-clone-organized.git";
+    let expected = "git/github.com/lihram/rust-clone-organized";
+    let actual = to_filesystem_path("git", url);
+
+    assert_eq!(actual, expected);
 }
 
-fn parse_ssh_url(url: &str, base: &str) -> String {
-    // FORGIVE ME: There is no ssh formatting validation
-    let url = trim_ssh(url);
+#[test]
+fn github_ssh() {
+    let url = "git@github.com:lihram/rust-clone-organized.git";
+    let expected = "git/github.com/lihram/rust-clone-organized";
+    let actual = to_filesystem_path("git", url);
 
-    // ["git@github.com", "lihram/git-clown-rs"]
-    let ssh_parts = url.split(':').collect::<Vec<_>>();
-
-    // ["git", "github.com"] -> "github.com"
-    let domain = ssh_parts[0].split('@').collect::<Vec<_>>()[1];
-
-    let path = ssh_parts[1];
-
-    format!("{}/{}/{}", base, domain, path)
-}
-
-fn trim_ssh(url: &str) -> &str {
-    url.strip_prefix("ssh://").unwrap_or_else(|| &url)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn github_https() {
-        let url = "https://github.com/lihram/rust-clone-organized.git";
-        let expected = "git/github.com/lihram/rust-clone-organized";
-        let actual = to_filesystem_path("git", url);
-
-        assert_eq!(actual, expected);
-    }
-
-    #[test]
-    fn github_ssh() {
-        let url = "git@github.com:lihram/rust-clone-organized.git";
-        let expected = "git/github.com/lihram/rust-clone-organized";
-        let actual = to_filesystem_path("git", url);
-
-        assert_eq!(actual, expected);
-    }
+    assert_eq!(actual, expected);
 }
