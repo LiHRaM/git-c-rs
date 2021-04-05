@@ -9,19 +9,17 @@ use std::process::Command;
 
 fn main() {
     let args: Args = argh::from_env();
-    let base_dir = get_base_dir();
-    let prefix = args.prefix.or_else(|| Some(base_dir)).unwrap();
+    let base_dir = args.base_dir.unwrap_or_else(|| get_base_dir());
 
-    let url = {
-        if let Some(url) = args.url {
-            url
-        } else {
-            let mut buffer = String::new();
-            std::io::stdin().read_line(&mut buffer).unwrap();
-            buffer
-        }
+    let url = if let Some(url) = args.url {
+        url
+    } else {
+        let mut buffer = String::new();
+        std::io::stdin().read_line(&mut buffer).unwrap();
+        buffer
     };
-    let into_dir = git_c::to_filesystem_path(&prefix, &url);
+
+    let into_dir = git_c::to_filesystem_path(&base_dir, &url);
     Command::new("git")
         .arg("clone")
         .arg(url)
@@ -45,12 +43,12 @@ fn get_home_dir() -> String {
 }
 
 #[derive(FromArgs)]
-/// Let's parse some git repository urls.
+/// Keep your repositories organized. Automatically.
 struct Args {
     #[argh(positional)]
     url: Option<String>,
 
-    #[argh(option)]
-    /// optional git prefix
-    prefix: Option<String>,
+    #[argh(option, short = 'b')]
+    /// an optional base directory
+    base_dir: Option<String>,
 }
