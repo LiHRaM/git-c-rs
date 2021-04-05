@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 use argh::FromArgs;
-use git_clown;
+use git_c;
 use std::process::Command;
 
 fn main() {
@@ -21,7 +21,7 @@ fn main() {
             buffer
         }
     };
-    let into_dir = git_clown::to_filesystem_path(&prefix, &url);
+    let into_dir = git_c::to_filesystem_path(&prefix, &url);
     Command::new("git")
         .arg("clone")
         .arg(url)

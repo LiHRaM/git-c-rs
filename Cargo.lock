@@ -129,7 +129,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "git-clown"
+name = "git-c"
 version = "0.1.0"
 dependencies = [
  "argh",
