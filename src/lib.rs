@@ -4,12 +4,12 @@
 // https://opensource.org/licenses/MIT
 
 //! A simple git clone wrapper.
-//! git-clown simply mimics the topology of the website it clones from.
+//! git-c simply mimics the topology of the website it clones from.
 //!
 //! An example:
 //! ```bash
-//! $ git-clown https://github.com/lihram/git-clown-rs.git
-//! Cloning https://github.com/lihram/git-clown-rs.git into /home/lihram/git/github.com/lihram/git-clown-rs
+//! $ git-c https://github.com/lihram/git-c-rs.git
+//! Cloning https://github.com/lihram/git-c-rs.git into /home/lihram/git/github.com/lihram/git-c-rs
 //! ```
 
 mod https;
