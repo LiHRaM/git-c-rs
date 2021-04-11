@@ -66,6 +66,21 @@ const CLONE_ARGS: &[&str] = &[
     "--jobs",
 ];
 
+static HELP: &'static str = r#"git c is a wrapper for git clone.
+
+It supports both HTTP and SCP style urls.
+
+Example:
+    git c git@github.com:LiHRaM/git-c-rs.git
+    git c https://github.com/LiHRaM/git-c-rs.git
+
+It generates a target directory to place the new repository in based on the structure of the url you submit.
+Besides the url and an optional base directory, it forwards all parameters to the git clone binary.
+
+See git clone --help for more information on the arguments that git clone supports.
+
+If a command is not forwarded properly to the git clone binary, feel free to reach out on GitHub, or to submit a pull request."#;
+
 pub struct GitConfig;
 
 impl GitConfig {
@@ -93,6 +108,10 @@ impl GitConfig {
                 is_arg = false;
             } else {
                 match arg.as_str() {
+                    "-h" | "--help" => {
+                        println!("{}", HELP);
+                        std::process::exit(0);
+                    }
                     arg if CLONE_FLAGS.contains(&arg) => {
                         git_args.push(arg.into());
                     }
