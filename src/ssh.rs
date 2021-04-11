@@ -8,7 +8,7 @@ use pom::{
     parser::{none_of, not_a, sym, Parser},
 };
 
-pub(crate) fn parse_url<'a>(url: &'a str, base: &str) -> String {
+pub(crate) fn parse_url(url: &str, base: &str) -> String {
     let (server, project) = match url.strip_prefix("ssh://") {
         Some(url) => ssh().parse(url.as_bytes()),
         None => scp().parse(url.as_bytes()),

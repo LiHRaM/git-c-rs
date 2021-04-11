@@ -15,10 +15,9 @@ categories = ["command-line-utilities"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
 url = "2.2.0"
-argh = "0.1.4"
 dirs = "3.0.1"
 pom = "3.2.0"
 
 [[bin]]
 name = "git-c"
-path = "src/bins/git-c.rs"
+path = "src/bin/git-c.rs"
