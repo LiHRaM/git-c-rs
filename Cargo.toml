@@ -14,7 +14,7 @@ categories = ["command-line-utilities"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
-url = "2.4.0"
+url = "2.5.0"
 dirs = "5.0.1"
 pom = "3.3.0"
 
