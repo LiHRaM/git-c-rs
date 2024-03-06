@@ -16,7 +16,7 @@ categories = ["command-line-utilities"]
 [dependencies]
 url = "2.5.0"
 dirs = "5.0.1"
-pom = "3.3.0"
+pom = "3.4.0"
 
 [[bin]]
 name = "git-c"
